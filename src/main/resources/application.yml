@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3390/spring_all_in_one?serverTimezone=Asia/Seoul
-    username: root
-    password: anminjae-55
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -14,12 +14,12 @@ spring:
         show-sql: true
 
 oauth2:
-  login-url: https://accounts.google.com/o/oauth2/v2/auth
-  client-id: 102198852637-56tbe1c8n8kcn2u6e7abu50v2oovjc2b.apps.googleusercontent.com
-  client-pw: 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
-  redirect-uri: http://localhost:8080/login/oauth2/code/google
-  token-uri: https://oauth2.googleapis.com/token
-  user-info-uri: https://www.googleapis.com/userinfo/v2/me
+  login-url: ${OAUTH2_LOGIN_URL}
+  client-id: ${OAUTH2_CLIENT_ID}
+  client-pw: ${OAUTH2_CLIENT_SECRET}
+  redirect-uri: ${OAUTH2_REDIRECT_URI}
+  token-uri: ${OAUTH2_TOKEN_URI}
+  user-info-uri: ${OAUTH2_USER_INFO_URI}
 
 jwt:
-  secret-key: 4f0bc329a08a035d0f888f6669cb7b0c392eba5e4300c36f2a9e0e197de95da791057b9dfc295f790708af5afaae2c4b20777d70a545e8acb34685b60cf00c7d
+  secret-key: ${JWT_SECRET_KEY}
