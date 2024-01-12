@@ -57,3 +57,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### ETC ###
+*.pem
