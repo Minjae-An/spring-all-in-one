@@ -3,6 +3,7 @@ package com.example.springallinoneproject.user.login;
 import com.example.springallinoneproject.user.dto.JwtResponse;
 import com.example.springallinoneproject.user.dto.LoggedInUser;
 import com.example.springallinoneproject.user.dto.UserProfileResponse;
+import com.example.springallinoneproject.user.login.jwt.JwtUtil;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class LoginController {
         String accessToken = loginService.getToken(code);
         UserProfileResponse userProfile = loginService.getUserProfile(accessToken);
         LoggedInUser loggedInUser = loginService.createUser(userProfile);
-        String token = jwtUtil.createToken(loggedInUser, Instant.now());
+        String token = jwtUtil.createAuthorization(loggedInUser, Instant.now());
 
         return ResponseEntity.ok(new JwtResponse(token));
     }

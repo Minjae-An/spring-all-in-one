@@ -1,6 +1,6 @@
 package com.example.springallinoneproject.interceptor;
 
-import com.example.springallinoneproject.user.login.JwtUtil;
+import com.example.springallinoneproject.user.login.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             throw new IllegalStateException("No Bearer prefix");
         }
 
-        String token = jwtUtil.extractTokenFromHeader(header);
+        String token = jwtUtil.extractTokenFromAuthorization(header);
         if(jwtUtil.isTokenExpired(token)){
             throw new IllegalStateException("token expired");
         }
