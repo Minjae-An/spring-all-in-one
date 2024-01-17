@@ -28,7 +28,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             throw new GeneralException(ErrorStatus._ACCESS_TOKEN_EXPIRED);
         }
 
-        if (jwtUtil.isTokenNotManipulated(token)) {
+        if (!jwtUtil.isTokenNotManipulated(token)) {
             throw new GeneralException(ErrorStatus._TOKEN_SIGNATURE_NOT_VALID);
         }
 
