@@ -61,5 +61,4 @@ out/
 ### ETC ###
 *.pem
 /mysql-data
-/mysql-init.d
 /redis_volume
