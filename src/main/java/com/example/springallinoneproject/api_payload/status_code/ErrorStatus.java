@@ -13,6 +13,8 @@ public enum ErrorStatus implements BaseCode{
     _NO_BEARER_PREFIX(HttpStatus.BAD_REQUEST, "JWT4001", "Bearer prefix가 authorzation 헤더 값에 존재하지 않습니다."),
     _TOKEN_SIGNATURE_NOT_VALID(HttpStatus.BAD_REQUEST, "JWT4002", "시그니처가 올바르지 않은 JWT입니다."),
     _ACCESS_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "JWT4003", "access token이 만료되었습니다. refresh token을 보내주세요."),
+    _REFRESH_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "JWT4004", "refresh token이 만료되었습니다. 재로그인 해주세요."),
+    _INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "JWT4005", "유효하지 않은 refresh token입니다. 재로그인 해주세요."),
 
     // user
     _USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "해당 사용자가 존재하지 않습니다."),
