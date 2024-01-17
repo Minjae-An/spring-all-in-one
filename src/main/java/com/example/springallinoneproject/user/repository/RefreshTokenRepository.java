@@ -4,8 +4,8 @@ import com.example.springallinoneproject.user.dto.RefreshToken;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 
-public interface RefreshTokenRepository extends CrudRepository<RefreshToken, String> {
+public interface RefreshTokenRepository extends CrudRepository<RefreshToken, Long> {
     Optional<RefreshToken> findByToken(String token);
 
-    Optional<RefreshToken> findByAuthId(String authId);
+    Optional<RefreshToken> findByAuthId(Long authId);
 }

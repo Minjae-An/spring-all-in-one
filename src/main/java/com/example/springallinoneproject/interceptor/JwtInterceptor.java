@@ -1,5 +1,7 @@
 package com.example.springallinoneproject.interceptor;
 
+import com.example.springallinoneproject.api_payload.status_code.ErrorStatus;
+import com.example.springallinoneproject.exception.GeneralException;
 import com.example.springallinoneproject.user.login.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,17 +19,17 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(!jwtUtil.isIncludeTokenPrefix(header)){
-            throw new IllegalStateException("No Bearer prefix");
+        if (!jwtUtil.isIncludeTokenPrefix(header)) {
+            throw new GeneralException(ErrorStatus._NO_BEARER_PREFIX);
         }
 
         String token = jwtUtil.extractTokenFromAuthorization(header);
-        if(jwtUtil.isTokenExpired(token)){
-            throw new IllegalStateException("token expired");
+        if (jwtUtil.isTokenExpired(token)) {
+            throw new GeneralException(ErrorStatus._ACCESS_TOKEN_EXPIRED);
         }
 
-        if(jwtUtil.isTokenNotManipulated(token)){
-            throw new IllegalStateException("token manipulated");
+        if (!jwtUtil.isTokenNotManipulated(token)) {
+            throw new GeneralException(ErrorStatus._TOKEN_SIGNATURE_NOT_VALID);
         }
 
         return true;

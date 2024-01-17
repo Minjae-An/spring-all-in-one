@@ -60,3 +60,5 @@ out/
 
 ### ETC ###
 *.pem
+/mysql-data
+/redis_volume
