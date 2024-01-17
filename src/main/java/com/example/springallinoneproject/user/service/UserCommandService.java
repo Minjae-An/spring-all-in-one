@@ -2,7 +2,9 @@ package com.example.springallinoneproject.user.service;
 
 import static com.example.springallinoneproject.user.dto.UserImageResponse.UserImageUploadResponse;
 
+import com.example.springallinoneproject.api_payload.status_code.ErrorStatus;
 import com.example.springallinoneproject.converter.UserConverter;
+import com.example.springallinoneproject.exception.GeneralException;
 import com.example.springallinoneproject.user.dto.UserResponse.UserImagesUploadResponse;
 import com.example.springallinoneproject.user.entity.User;
 import com.example.springallinoneproject.user.entity.UserImage;
@@ -57,8 +59,9 @@ public class UserCommandService {
 
     public void deleteUserImage(Long userId, String deleteImageFilename){
         User user = findById(userId);
-        if(!user.deleteUserImage(deleteImageFilename))
-            throw new IllegalStateException("해당 파일이 존재하지 않습니다");
+        if(!user.deleteUserImage(deleteImageFilename)){
+            throw new GeneralException(ErrorStatus._USER_IMAGE_NOT_FOUND);
+        }
         s3Service.deleteFile(deleteImageFilename);
     }
 
@@ -68,6 +71,6 @@ public class UserCommandService {
 
     private User findById(Long id){
         return userRepository.findById(id)
-                .orElseThrow(()->new IllegalStateException("해당 사용자가 존재하지 않음"));
+                .orElseThrow(()->new GeneralException(ErrorStatus._USER_NOT_FOUND));
     }
 }
