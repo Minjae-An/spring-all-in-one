@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  database:
+    container_name: mysql_db
+    image: mysql/mysql-server:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: spring_all_in_one
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: 'Asia/Seoul'
+    ports:
+      - "3306:3306"
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - ./mysql-init.d/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - test_network
+
+  redis:
+    image: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - C:\\Users\\mj324\\be_projects\\spring-allinone-project\\redis.conf:/usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    networks:
+      - test_network
+
+  spring-all-in-one:
+    container_name: spring-all-in-one
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://mysql_db:3306/spring_all_in_one
+      DB_USERNAME: "root"
+      DB_PW: "1234"
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PW: 1234
+
+    depends_on:
+      - redis
+      - database
+    networks:
+      - test_network
+    restart: unless-stopped
+
+networks:
+  test_network:
