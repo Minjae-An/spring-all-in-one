@@ -3,7 +3,6 @@ package com.example.springallinoneproject.user.login.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.example.springallinoneproject.refresh_token.TokenRepository;
 import com.example.springallinoneproject.user.dto.LoggedInUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,13 +18,11 @@ import org.springframework.stereotype.Component;
 public class JwtUtil {
     @Value("${jwt.secret-key}")
     private String secret;
-    private int expirationTimeMillis = 864_000_000; // 10일(밀리 초 단위)
-    @Value("${jwt.refresh-token-expiration-millis}")
-    private int refreshTokenExpirationMillis;
+    private int expirationTimeSeconds = 60;
+    @Value("${jwt.refresh-token-expiration-seconds}")
+    private int refreshTokenExpirationSeconds;
     private String tokenPrefix = "Bearer ";
     private ObjectMapper objectMapper = new ObjectMapper();
-    private final TokenRepository tokenRepository;
-
 
     public boolean isIncludeTokenPrefix(String authorization) {
         return authorization.split(" ")[0].equals(tokenPrefix.trim());
@@ -37,7 +34,7 @@ public class JwtUtil {
 
 
     public String createAuthorization(LoggedInUser loggedInUser, Instant current) {
-        String token = createToken(loggedInUser, current);
+        String token = createAccessToken(loggedInUser, current);
         return tokenPrefix.concat(token);
     }
 
@@ -51,9 +48,7 @@ public class JwtUtil {
     public boolean isTokenNotManipulated(String token) {
         try {
             JWT.require(Algorithm.HMAC512(secret))
-                    .build().verify(token)
-                    .getSignature();
-
+                    .build().verify(token);
             return true;
         } catch (JWTVerificationException e) {
             return false;
@@ -71,20 +66,19 @@ public class JwtUtil {
     }
 
 
-    public String createToken(LoggedInUser loggedInUser, Instant current) {
+    public String createAccessToken(LoggedInUser loggedInUser, Instant current) {
         return JWT.create()
                 .withSubject(loggedInUser.getEmail())
-                .withExpiresAt(current.plusMillis(expirationTimeMillis))
+                .withExpiresAt(current.plusSeconds(expirationTimeSeconds))
                 .withClaim("email", loggedInUser.getEmail())
                 .withClaim("username", loggedInUser.getUsername())
                 .sign(Algorithm.HMAC512(secret));
     }
 
-    public String createRefreshToken(Long id, Instant issuedAt) {
+    public String createRefreshToken(Long id, Instant current) {
         return JWT.create()
+                .withExpiresAt(current.plusSeconds(refreshTokenExpirationSeconds))
                 .withClaim("id", id)
-                .withIssuedAt(issuedAt)
-                .withExpiresAt(issuedAt.plusMillis(refreshTokenExpirationMillis))
                 .sign(Algorithm.HMAC512(secret));
     }
 
@@ -93,7 +87,10 @@ public class JwtUtil {
             LinkedHashMap<String, Object> payloadMap = objectMapper.readValue(decodedPayload, LinkedHashMap.class);
             String email = (String) payloadMap.get("email");
             String username = (String) payloadMap.get("username");
-            return new LoggedInUser(email, username);
+            return LoggedInUser.builder()
+                    .email(email)
+                    .username(username)
+                    .build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
