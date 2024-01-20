@@ -3,8 +3,8 @@ package com.example.springallinoneproject.notification;
 import com.example.springallinoneproject.notification.NotificationRequest.CreateNotificationRequest;
 import com.example.springallinoneproject.user.entity.User;
 import com.example.springallinoneproject.user.service.UserQueryService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class NotificationController {
     private final UserQueryService userQueryService;
     private final NotificationService notificationService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(
@@ -41,11 +42,7 @@ public class NotificationController {
 
     @PostMapping("/notifications")
     public ResponseEntity<Void> notificationToAll(@RequestBody CreateNotificationRequest request) {
-        List<User> users = userQueryService.findAll();
-        users.forEach(user -> notificationService
-                .send(user, request.getNotificationType(),
-                        request.getContent(), request.getRelatedUrl()));
-
+        eventPublisher.publishEvent(request);
         return ResponseEntity.ok().build();
     }
 }
