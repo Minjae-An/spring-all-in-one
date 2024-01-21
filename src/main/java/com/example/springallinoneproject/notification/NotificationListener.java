@@ -1,6 +1,6 @@
 package com.example.springallinoneproject.notification;
 
-import com.example.springallinoneproject.notification.NotificationRequest.CreateNotificationRequest;
+import com.example.springallinoneproject.notification.dto.NotificationRequest.CreateNotificationRequest;
 import com.example.springallinoneproject.user.entity.User;
 import com.example.springallinoneproject.user.service.UserQueryService;
 import java.util.List;

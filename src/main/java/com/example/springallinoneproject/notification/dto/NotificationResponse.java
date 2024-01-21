@@ -1,4 +1,4 @@
-package com.example.springallinoneproject.notification;
+package com.example.springallinoneproject.notification.dto;
 
 import com.example.springallinoneproject.notification.domain.NotificationType;
 import lombok.AccessLevel;
