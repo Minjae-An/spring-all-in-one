@@ -1,7 +1,7 @@
 package com.example.springallinoneproject.user.entity;
 
 import com.example.springallinoneproject.common.BaseEntity;
-import com.example.springallinoneproject.notification.Notification;
+import com.example.springallinoneproject.notification.domain.Notification;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

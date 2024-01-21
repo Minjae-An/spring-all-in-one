@@ -1,6 +1,8 @@
 package com.example.springallinoneproject.notification;
 
 import com.example.springallinoneproject.converter.NotificationConverter;
+import com.example.springallinoneproject.notification.domain.Notification;
+import com.example.springallinoneproject.notification.domain.NotificationType;
 import com.example.springallinoneproject.notification.emitter.EmitterRepository;
 import com.example.springallinoneproject.user.entity.User;
 import java.io.IOException;

@@ -1,5 +1,6 @@
 package com.example.springallinoneproject.notification;
 
+import com.example.springallinoneproject.notification.domain.NotificationType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

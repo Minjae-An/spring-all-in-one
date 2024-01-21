@@ -1,6 +1,6 @@
 package com.example.springallinoneproject.converter;
 
-import com.example.springallinoneproject.notification.Notification;
+import com.example.springallinoneproject.notification.domain.Notification;
 import com.example.springallinoneproject.notification.NotificationResponse.CreateNotificationDTO;
 
 public class NotificationConverter {

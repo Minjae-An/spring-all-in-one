@@ -1,4 +1,4 @@
-package com.example.springallinoneproject.notification;
+package com.example.springallinoneproject.notification.domain;
 
 import com.example.springallinoneproject.common.BaseEntity;
 import com.example.springallinoneproject.user.entity.User;

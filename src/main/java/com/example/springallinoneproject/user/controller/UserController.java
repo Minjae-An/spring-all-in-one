@@ -1,7 +1,7 @@
 package com.example.springallinoneproject.user.controller;
 
 import com.example.springallinoneproject.converter.NotificationConverter;
-import com.example.springallinoneproject.notification.Notification;
+import com.example.springallinoneproject.notification.domain.Notification;
 import com.example.springallinoneproject.notification.NotificationResponse.CreateNotificationDTO;
 import com.example.springallinoneproject.user.dto.UserImageRequest.DeleteUserImageRequest;
 import com.example.springallinoneproject.user.dto.UserImageResponse.UserImageUploadResponse;

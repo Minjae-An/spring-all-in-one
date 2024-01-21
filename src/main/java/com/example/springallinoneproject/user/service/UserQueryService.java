@@ -2,7 +2,7 @@ package com.example.springallinoneproject.user.service;
 
 import com.example.springallinoneproject.api_payload.status_code.ErrorStatus;
 import com.example.springallinoneproject.exception.GeneralException;
-import com.example.springallinoneproject.notification.Notification;
+import com.example.springallinoneproject.notification.domain.Notification;
 import com.example.springallinoneproject.user.entity.User;
 import com.example.springallinoneproject.user.repository.UserRepository;
 import java.util.List;
