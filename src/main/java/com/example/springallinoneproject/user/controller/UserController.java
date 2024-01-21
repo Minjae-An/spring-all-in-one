@@ -1,13 +1,18 @@
 package com.example.springallinoneproject.user.controller;
 
+import com.example.springallinoneproject.converter.NotificationConverter;
+import com.example.springallinoneproject.notification.domain.Notification;
+import com.example.springallinoneproject.notification.dto.NotificationResponse.CreateNotificationDTO;
 import com.example.springallinoneproject.user.dto.UserImageRequest.DeleteUserImageRequest;
 import com.example.springallinoneproject.user.dto.UserImageResponse.UserImageUploadResponse;
 import com.example.springallinoneproject.user.dto.UserResponse.UserImagesUploadResponse;
 import com.example.springallinoneproject.user.service.UserCommandService;
+import com.example.springallinoneproject.user.service.UserQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/user")
 public class UserController {
     private final UserCommandService userCommandService;
+    private final UserQueryService userQueryService;
 
     @PostMapping("/{userId}/single-image")
     public ResponseEntity<UserImageUploadResponse>
@@ -33,8 +39,8 @@ public class UserController {
 
     @PostMapping("/{userId}/images")
     public ResponseEntity<UserImagesUploadResponse>
-    uploadUserImaeges(@PathVariable Long userId,
-                      @RequestPart(value = "images") List<MultipartFile> uploadImages) {
+    uploadUserImages(@PathVariable Long userId,
+                     @RequestPart(value = "images") List<MultipartFile> uploadImages) {
         UserImagesUploadResponse response = userCommandService.uploadUserImages(userId, uploadImages);
         return ResponseEntity.ok(response);
     }
@@ -44,5 +50,16 @@ public class UserController {
                                                   @RequestBody DeleteUserImageRequest request) {
         userCommandService.deleteUserImage(userId, request.getDeleteImageFilename());
         return ResponseEntity.accepted().build();
+    }
+
+    @GetMapping("/{userId}/recevied-notifications")
+    public ResponseEntity<List<CreateNotificationDTO>>
+    getReceivedNotifications(@PathVariable("userId") Long userId) {
+        List<Notification> receivedNotifications = userQueryService.getReceivedNotifications(userId);
+        List<CreateNotificationDTO> response = receivedNotifications.stream()
+                .map(NotificationConverter::toCreateNotificationDTO)
+                .toList();
+
+        return ResponseEntity.ok(response);
     }
 }
