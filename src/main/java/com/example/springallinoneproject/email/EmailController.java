@@ -33,7 +33,7 @@ public class EmailController {
         return CommonResponse.of(SuccessStatus._ACCEPTED, null);
     }
 
-    @PostMapping("/verification-code")
+    @PostMapping("/email/verification-code")
     public CommonResponse<String>
     verificationByCode(@RequestBody VerificationCodeRequest request) {
         LocalDateTime requestedAt = LocalDateTime.now();
