@@ -42,6 +42,12 @@ spring:
       path: mail-templates/
       logo-path: classpath:/static/logo.jpg
 
+  sms:
+    api-key: ${SMS_API_KEY}
+    api-secret: ${SMS_API_SECRET}
+    provider: https://api.coolsms.co.kr
+    sender: ${SMS_SENDER}
+
 cloud:
   aws:
     credentials:
