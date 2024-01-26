@@ -27,6 +27,18 @@ spring:
   cache:
     type: redis
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_SMTP_ACCOUNT}
+    password: ${GOOGLE_SMTP_PW}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+
 cloud:
   aws:
     credentials:
