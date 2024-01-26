@@ -4,6 +4,7 @@ import com.example.springallinoneproject.api_payload.CommonResponse;
 import com.example.springallinoneproject.api_payload.status_code.SuccessStatus;
 import com.example.springallinoneproject.email.dto.EmailRequest.EmailForVerificationRequest;
 import com.example.springallinoneproject.email.dto.EmailRequest.VerificationCodeRequest;
+import jakarta.mail.MessagingException;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,17 @@ public class EmailController {
     @PostMapping("/verify-email")
     public CommonResponse<Void>
     getEmailForVerification(@RequestBody EmailForVerificationRequest request) {
-        LocalDateTime requestedAt = LocalDateTime.now();
-        emailService.sendSimpleVerificationMail(request.getEmail(), requestedAt);
+        LocalDateTime sentAt = LocalDateTime.now();
+        emailService.sendSimpleVerificationMail(request.getEmail(), sentAt);
+        return CommonResponse.of(SuccessStatus._ACCEPTED, null);
+    }
+
+    @PostMapping("/v2/verify-email")
+    public CommonResponse<Void>
+    getEmailForVerificationV2(@RequestBody EmailForVerificationRequest request)
+            throws MessagingException {
+        LocalDateTime sentAt = LocalDateTime.now();
+        emailService.sendVerificationMailWithTemplate(request.getEmail(), sentAt);
         return CommonResponse.of(SuccessStatus._ACCEPTED, null);
     }
 
