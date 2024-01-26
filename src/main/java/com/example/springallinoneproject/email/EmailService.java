@@ -2,13 +2,13 @@ package com.example.springallinoneproject.email;
 
 import com.example.springallinoneproject.api_payload.status_code.ErrorStatus;
 import com.example.springallinoneproject.auth.VerificationCode;
+import com.example.springallinoneproject.auth.VerificationCodeGenerator;
 import com.example.springallinoneproject.auth.VerificationCodeRepository;
 import com.example.springallinoneproject.exception.GeneralException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -26,8 +26,6 @@ public class EmailService {
     private String serviceEmail;
     @Value("${spring.mail.templates.logo-path}")
     private Resource logoFile;
-
-    private final Integer EXPIRATION_TIME_IN_MINUTES = 5;
     private final String VERIFICATION_CODE_MAIL_SUBJECT = "Email Verification For %s";
 
     private final JavaMailSender mailSender;
@@ -40,7 +38,8 @@ public class EmailService {
         mailMessage.setTo(to);
         mailMessage.setSubject(String.format(VERIFICATION_CODE_MAIL_SUBJECT, to));
 
-        VerificationCode verificationCode = generateVerificationCode(sentAt);
+        VerificationCode verificationCode = VerificationCodeGenerator
+                .generateVerificationCode(sentAt);
         verificationCodeRepository.save(verificationCode);
 
         String text = verificationCode.generateCodeMessage();
@@ -50,7 +49,8 @@ public class EmailService {
     }
 
     public void sendVerificationMailWithTemplate(String to, LocalDateTime sentAt) throws MessagingException {
-        VerificationCode verificationCode = generateVerificationCode(sentAt);
+        VerificationCode verificationCode = VerificationCodeGenerator
+                .generateVerificationCode(sentAt);
         verificationCodeRepository.save(verificationCode);
 
         HashMap<String, Object> templateModel = new HashMap<>();
@@ -73,15 +73,6 @@ public class EmailService {
         }
 
         verificationCodeRepository.remove(verificationCode);
-    }
-
-    private VerificationCode generateVerificationCode(LocalDateTime sentAt) {
-        String code = UUID.randomUUID().toString();
-        return VerificationCode.builder()
-                .code(code)
-                .createAt(sentAt)
-                .expirationTimeInMinutes(EXPIRATION_TIME_IN_MINUTES)
-                .build();
     }
 
     private void sendHtmlMessage(String to, String subject, String htmlBody)
