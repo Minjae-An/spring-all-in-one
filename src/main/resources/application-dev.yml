@@ -38,6 +38,9 @@ spring:
           starttls:
             enable: true
           auth: true
+    templates:
+      path: mail-templates/
+      logo-path: classpath:/static/logo.jpg
 
 cloud:
   aws:
