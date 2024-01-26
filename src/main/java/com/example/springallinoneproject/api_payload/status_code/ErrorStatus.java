@@ -22,7 +22,11 @@ public enum ErrorStatus implements BaseCode{
     _ALREADY_JOINED_USER(HttpStatus.BAD_REQUEST, "USER4003", "해당 이메일로 이미 가입한 유저가 존재합니다."),
 
     // user image
-    _USER_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER_IMAGE4001", "해당 사용자 이미지가 존재하지 않습니다.");
+    _USER_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER_IMAGE4001", "해당 사용자 이미지가 존재하지 않습니다."),
+
+    // email verification
+    _VERIFICATION_CODE_EXPIRED(HttpStatus.BAD_REQUEST, "EMAIL_VERIFICATION4001", "만료된 인증 코드입니다."),
+    _VERIFICATION_CODE_NOT_FOUND(HttpStatus.BAD_REQUEST, "EMAIL_VERIFICATION4002", "존재하지 않는 인증 코드입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
